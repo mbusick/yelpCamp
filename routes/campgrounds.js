@@ -16,6 +16,7 @@ router.get("/", function(req, res){
 });
 //create
 router.post("/", middleware.isLoggedIn, function(req, res){
+	console.log(req);
 	var name = req.body.name;
 	var image = req.body.image;
 	var desc = req.body.description;
@@ -23,20 +24,23 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 		id: req.user._id,
 		username: req.user.username
 	};
-	var newCampground = {name: name, image: image, description: desc, author: author}	
-	Campground.create(newCampground, function(err, newlyCreated){
-		if(err){
-			connected.log(err);
-		}else{
-			//redirect back to campgrounds page
-			console.log(newlyCreated);
-			res.redirect("/campgrounds");
-		}
+	var cost = req.body.cost;
+	var newCampground = {name: name, image: image, description: desc, cost: cost, author: author}	
+		Campground.create(newCampground, function(err, newlyCreated){
+			if(err){
+				connected.log(err);
+			}else{
+				//redirect back to campgrounds page
+				console.log(newlyCreated);
+				res.redirect("/campgrounds");
+			}
+		});
 	});
-});
 
 //NEW - show form to create new campground
 router.get("/new", middleware.isLoggedIn, function(req, res){
+	console.log(req);
+
 	res.render("campgrounds/new");
 });
 
@@ -56,6 +60,7 @@ router.get("/:id", function(req, res){
 
 //Edit campground route
 router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req, res){
+	console.log('request ', req);
 	Campground.findById(req.params.id, function(err, foundCampground){
 		res.render("campgrounds/edit", {campground: foundCampground});
 	});  
@@ -64,7 +69,7 @@ router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req, res){
 //Update campground route
 router.put("/:id", middleware.checkCampgroundOwnership, function(req, res){
 	//find and update the correct campground
-	Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updateCampground){
+	Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err){
 		if(err){
 			res.redirect("/campground");
 		}else{
@@ -84,7 +89,6 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
 		}
 	});
 });
-
 
 
 
