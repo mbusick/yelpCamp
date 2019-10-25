@@ -15,7 +15,7 @@ Home Page
 
 ## Architecture 
 
-The pages in this app are built with HTML5, CSS3, JavaScript,and Bootstrap 4. I used jQuery, NodeJS, and ExpressJS to handle requests with MongoDB as my DB. Authentication with username and password store is used to ensure only the user can edit or delete campgrounds and comments.
+The pages in this app are built with HTML5, CSS3, JavaScript,and Bootstrap 4. I used jQuery, NodeJS, and ExpressJS to handle requests with MongoDB as my DB. Authentication with username and password store is used to make it so only the user can edit or delete campgrounds and comments.
 
 ## About
 
