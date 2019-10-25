@@ -57,8 +57,9 @@ app.use("/", indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
-app.listen(5000, process.env.IP, function(){
-	console.log("The YelpCamp Server Has Started!");
+var port = process.env.PORT || 5000;
+app.listen(port, process.env.IP, function(){
+	console.log("The YelpCamp Server Has Started! on port: ", process.env.IP);
 });
 
 
