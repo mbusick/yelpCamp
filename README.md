@@ -13,7 +13,7 @@ Once you click on "View All Campgrounds" it will take you to the home page where
 Home Page
 ![my image](demo/home.png)
 
-## Archatchure 
+## Architecture 
 
 The pages in this app are built with HTML5, CSS3, JavaScript,and Bootstrap 4. I used jQuery, NodeJS, and ExpressJS to handle requests with MongoDB as my DB. Authentication with username and password store is used to ensure only the user can edit or delete campgrounds and comments.
 
