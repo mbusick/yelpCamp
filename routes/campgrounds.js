@@ -2,6 +2,7 @@ var express = require("express");
 var router  = express.Router();
 var Campground = require("../models/campground");
 var middleware = require("../middleware");
+var geocoder = require('geocoder');
 
 //Index - show all campgrounds
 router.get("/", function(req, res){
@@ -25,7 +26,15 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 		username: req.user.username
 	};
 	var cost = req.body.cost;
-	var newCampground = {name: name, image: image, description: desc, cost: cost, author: author}	
+	geocoder.geocode(req.body.location, function (err, data) {
+		if (err || data.status === 'ZERO_RESULTS') {
+			req.flash('error', 'Invalid address');
+			return res.redirect('back');
+			}
+		var lat = data.results[0].geometry.location.lat;
+		var lng = data.results[0].geometry.location.lng;
+		var location = data.results[0].formatted_address;
+		var newCampground = {name: name, image: image, description: desc, cost: cost, author: author, location: location, lat: lat, lng: lng}
 		Campground.create(newCampground, function(err, newlyCreated){
 			if(err){
 				connected.log(err);
@@ -36,6 +45,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 			}
 		});
 	});
+});
 
 //NEW - show form to create new campground
 router.get("/new", middleware.isLoggedIn, function(req, res){
@@ -89,7 +99,5 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
 		}
 	});
 });
-
-
 
 module.exports = router;
